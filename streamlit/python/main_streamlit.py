@@ -218,8 +218,8 @@ elif choice == "ログイン":
 							if column == column_list[i]:
 								df_s = df[df['単位'] == column]
 						
-						max_value = df_s['year'].max()
-						min_value = df_s['year'].min()
+						max_value = 2022
+						min_value = 2020
 						product_y = st.slider('年を選択してくだい', min_value=min_value, max_value=max_value, step=1, value=min_value)
 						
 						for i in range(len(year_list)):

@@ -256,4 +256,113 @@ elif choice == "ログイン":
 
 
 
-				
+				elif menu == select[1]:
+					st.write('not data')
+					
+				else:
+					df = pd.read_csv('streamlit/data/sankikougyou.csv')
+					df = df.dropna()
+					df['year'] = df['日付'].apply(lambda x: int(x[:4]))
+					df['month'] = df['日付'].apply(lambda x : int(x[5:7]))
+					df['day'] = df['日付'].apply(lambda x: int(x[-2:]))
+					year_list = [i for i in df['year'].unique()]
+					column_list = ['m3', 'kg', '台']
+					st.write(f'単位別の{menu}を調べる')
+					column = st.selectbox('選択してください', column_list)
+					for i in range(len(column_list)):
+						if column == column_list[i]:
+							df_val = df[df['単位'] == column]	
+					
+					years = st.slider('年を選択してください', min_value=2020, max_value=2022, step=1, value=2020)
+
+					if years == year_list[0]:
+						df_year = df_val[df_val['year'] == 2020]
+						df_month = df_year.groupby('month').sum()
+						df_value = df_month[['数量']]
+						st.bar_chart(df_value)
+						st.write('↓月ごとの数量')
+						st.write(df_value.T)
+
+					elif  years == year_list[1]:
+						df_year = df_val[df_val['year'] == 2021]
+						df_month = df_year.groupby('month').sum()
+						df_value = df_month[['数量']]
+						st.bar_chart(df_value)
+						st.write('↓月ごとの数量')
+						st.write(df_value.T)
+
+					else:
+						df_year = df_val[df_val['year'] == 2022]
+						df_month = df_year.groupby('month').sum()
+						df_value = df_month[['金額']]
+						st.bar_chart(df_value)
+						st.write('↓月ごとの数量')
+						st.write(df_value.T)
+					
+
+
+					con = st.checkbox('all')
+					if con == True:
+
+						df_one = df[df['year'] == 2020]
+						df_one = df_one[df_one['単位'] == column]
+						df_month = df_one.groupby('month').sum()
+						df_value_1 = df_month[['数量']]
+						df_value_1 = df_value_1.rename(columns={'数量': 2020})
+						df_value_1['月'] = df_value_1.index
+
+
+						df_two = df[df['year'] == 2021]
+						df_two = df_two[df_two['単位'] == column]
+						df_month = df_two.groupby('month').sum()
+						df_value_2 = df_month[['数量']]
+						df_value_2 = df_value_2.rename(columns={'数量':2021})
+						df_value_2['月'] = df_value_2.index
+
+						df_three = df[df['year'] == 2022]
+						df_three = df_three[df_three['単位'] == column]
+						df_month = df_three.groupby('month').sum()
+						df_value_3 = df_month[['数量']]
+						df_value_3 = df_value_3.rename(columns={'数量':2022})
+						df_value_3['月'] = df_value_3.index
+
+						df_all = df_value_1.merge(df_value_2, how='outer', on='月')
+						df_all = df_all.merge(df_value_3, how='outer', on='月')
+						df_all.index = df_all['月'].values
+						df_all2 = df_all[[2020, 2021, 2022]]
+						st.line_chart(df_all2)
+						df_val = df[df['単位'] == column]
+						df_year_sum = df_val.groupby('year').sum()
+						with st.container():
+							col1, col2 = st.columns([1, 1])
+						
+						with col1:
+							st.write(f'年別の{column}数量比較')
+							fig, ax = plt.subplots(figsize=(6, 4))
+							x = df_year_sum.index
+							y = df_year_sum['数量'].values
+							sns.barplot(x, y)
+							st.pyplot(fig)
+							st.write('各年の合計')
+							st.write(df_year_sum.loc[:,'数量'])
+
+						with col2:
+							st.write(f'月別の{column}比較')
+
+							x = df_value_1['月'].values
+							height = df_value_1[2020].values
+							
+							x2 = df_value_2['月'].values
+							height2 = df_value_2[2021].values
+
+							x3 = df_value_3['月'].values
+							height3 = df_value_3[2022].values
+
+							fig, axis = plt.subplots(figsize=(8, 6))
+							axis.bar(x, height, label='2020', align='edge')
+							axis.bar(x2, height2, label='2021', align='center')
+							axis.bar(x3, height3, label='2022', align='edge')
+							plt.xticks(np.arange(1, 13, 1))
+							plt.legend()
+							st.pyplot(fig)
+

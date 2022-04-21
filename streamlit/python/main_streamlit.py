@@ -251,6 +251,8 @@ elif choice == "ログイン":
 							df_a_all = pd.DataFrame({2020: df_a_1, 2021: df_a_2, 2022: df_a_3})
 							df_a_all = df_a_all.T
 							st.bar_chart(df_a_all)
+							st.write(f'{column}の売上金額↓')
+							st.write(df_a_all)
 
 
 

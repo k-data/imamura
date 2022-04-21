@@ -294,7 +294,7 @@ elif choice == "ログイン":
 					else:
 						df_year = df_val[df_val['year'] == 2022]
 						df_month = df_year.groupby('month').sum()
-						df_value = df_month[['金額']]
+						df_value = df_month[['数量']]
 						st.bar_chart(df_value)
 						st.write('↓月ごとの数量')
 						st.write(df_value.T)

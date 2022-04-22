@@ -263,7 +263,6 @@ elif choice == "ログイン":
 					df_stock['year'] = df_stock['日付'].apply(lambda x: int(x[:4]))
 					df_stock['month'] = df_stock['日付'].apply(lambda x : int(x[5:7]))
 					year_list = [i for i in df_stock['year'].unique()]
-					st.write(year_list)
 					
 					years = st.slider('年を選択してください', min_value=2020, max_value=2022, step=1, value=2020)
 					

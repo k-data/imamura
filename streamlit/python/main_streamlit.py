@@ -702,7 +702,6 @@ elif choice == "ログイン":
 					year_list = [i for i in df['year'].unique()]
 					column_list = ['m3', 'kg', '台']
 					st.write(f'単位別の{menu}を調べる')
-					st.write(year_list)
 					column = st.selectbox('選択してください', column_list)
 					for i in range(len(column_list)):
 						if column == column_list[i]:

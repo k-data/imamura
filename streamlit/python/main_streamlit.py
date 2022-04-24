@@ -456,7 +456,8 @@ elif choice == "ログイン":
 							plt.legend()
 							st.pyplot(fig)
 
-            else:
+				
+			else:
 				df = pd.read_csv('streamlit/data/meta2020.csv')
 				df = df.loc[:, ['日付', '得意先', '商品名', '数量', '単位', '単価', '金額']]
 				df = df.dropna()

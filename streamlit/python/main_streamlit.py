@@ -618,7 +618,7 @@ elif choice == "ログイン":
 						st.write('↓月ごとの仕入れ金額')
 						st.write(df_stock_month.T)
 					elif years == year_list[1]:
-						df_year = df_stock[df_stock['year'] == 2021]
+						df_year = df_stock[df_stock['year'] == 2020]
 						df_month = df_year.groupby('month').sum()
 						df_stock_month = df_month[['金額']]
 						st.bar_chart(df_stock_month)
